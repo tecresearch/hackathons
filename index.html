@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plant Disease Detection</title>
+<style>
+ 
+    body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #f2f2f2, #fff);
+    margin: 0;
+    padding: 0;
+  }
+
+  h1 {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: 800; /* Extra bold */
+  }
+
+  input[type="file"] {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+  }
+
+  input[type="file"]:hover {
+    background-color: #f9f9f9;
+  }
+
+  button {
+    display: block;
+    margin: 0 auto;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #45a049;
+  }
+
+  #resultTable {
+    width: 90%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  #resultTable th, #resultTable td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+  }
+
+  #resultTable th {
+    background-color: #f2f2f2;
+  }
+
+  #resultTable img {
+    max-width: 100px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    border-radius: 5px;
+  }
+
+  #resultTable td:first-child {
+    width: 150px;
+  }
+
+  /* Modal styles */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 800px;
+  }
+
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+   position: relative;
+}
+ .close-btn {
+    cursor: pointer;
+    font-size: 20px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: red;
+}
+
+.close-btn:hover {
+    color: #000;
+}
+
+  body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header img {
+            max-width: 100px;
+        }
+
+        header h1 {
+            margin-top: 0;
+        }
+
+        .about, .highlights, .development {
+            margin-bottom: 30px;
+        }
+
+        .highlights ul {
+            list-style: none;
+        }
+
+        .highlights li {
+            margin-bottom: 10px;
+        }
+
+        .highlights strong {
+            font-size: 1.1em;
+        }
+</style>
+</head>
+<body>
+ 
+ 
+<h1>Plant Disease Detection</h1>
+<input type="file" id="imageInput">
+<button onclick="detectDisease()">Check Disease</button><br><br><br>
+
+<table id="resultTable">
+  <tr>
+    <th>Image</th>
+    <th>Plant</th>
+    <th>Disease</th>
+    <th>Info</th>
+  </tr>
+</table>
+
+<!-- Modal popup window -->
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <iframe id="prototypeFrame" style="border: 1px solid rgba(0, 0, 0, 0.1);" width="100%" height="450" src="" allowfullscreen></iframe>
+  </div>
+</div>
+
+<script>
+  function detectDisease() {
+    var input = document.getElementById('imageInput');
+    var file = input.files[0];
+    if (file) {
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function() {
+        var imgData = reader.result;
+        // Call your detection function passing the imgData
+        // For demonstration, let's assume we have detected the plant and disease
+        var plant = "Demo";
+        var disease = "Sample";
+        var info = "About the sample";
+        displayResult(imgData, plant, disease, info);
+      };
+    }
+  }
+
+  function displayResult(imgData, plant, disease, info) {
+    var table = document.getElementById('resultTable');
+    var newRow = table.insertRow(-1);
+    var imgCell = newRow.insertCell(0);
+    var plantCell = newRow.insertCell(1);
+    var diseaseCell = newRow.insertCell(2);
+    var infoCell = newRow.insertCell(3);
+    imgCell.innerHTML = '<img src="' + imgData + '" alt="Uploaded Image">';
+    plantCell.textContent = plant;
+    diseaseCell.textContent = disease;
+    infoCell.textContent = info;
+  }
+
+  // Modal functions
+  function openModal() {
+    var modal = document.getElementById("myModal");
+    modal.style.display = "block";
+    var iframeSrc = "https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FfZhcyDMXQmAyamKQWczR8w%2FUntitled%3Ftype%3Ddesign%26node-id%3D3-5%26t%3DijHMks6tZ1V5rDvC-1%26scaling%3Dscale-down%26page-id%3D0%253A1%26starting-point-node-id%3D3%253A5%26mode%3Ddesign";
+    var iframe = document.getElementById("prototypeFrame");
+    iframe.src = iframeSrc;
+  }
+
+  function closeModal() {
+    var modal = document.getElementById("myModal");
+    modal.style.display = "none";
+    var iframe = document.getElementById("prototypeFrame");
+    iframe.src = ""; // Clear iframe src to stop any ongoing loading
+  }
+
+  // Close the modal when clicking outside of it
+  window.onclick = function(event) {
+    var modal = document.getElementById("myModal");
+    if (event.target == modal) {
+      modal.style.display = "none";
+      var iframe = document.getElementById("prototypeFrame");
+      iframe.src = ""; // Clear iframe src to stop any ongoing loading
+    }
+  }
+</script>
+
+<!-- Pop-up content -->
+<div class="overlay" id="popup">
+    <div class="popup">
+        <div class="close"></div>
+        <span class="close-btn" onclick="closePopup()">&times;</span>
+        <h2>🎉 Exciting News!<button onclick="openModal()">View App Model</button> 🎉</h2>
+        <p>Our team from TecResearch is thrilled to announce that we've been selected for the Galgotias University Dexterix 4.0 Hackathon! 🚀</p>
+        <p>After making it through the first round, we're now hard at work on our model to excel in the competition. Stay tuned for updates as we strive for success at Dexterix 4.0! 💪 #TecResearch #Dexterix4.0 #GalgotiasUniversity #Hackathon</p>
+    </div>
+</div>
+
+<script>
+// Function to close the pop-up
+function closePopup() {
+    document.getElementById("popup").style.display = "none";
+}
+
+// Automatically show the pop-up when the website loads
+window.onload = function() {
+    document.getElementById("popup").style.display = "flex";
+};
+</script>
+</body>
+</html>
